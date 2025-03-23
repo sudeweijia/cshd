@@ -1,0 +1,42 @@
+# 忽略 .env 文件
+.env
+
+# 忽略 node_modules 文件夹
+node_modules/
+
+# 忽略日志文件
+*.log
+
+# 忽略操作系统生成的文件
+.DS_Store
+Thumbs.db
+
+# 忽略 IDE 配置文件
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 忽略构建输出目录
+dist/
+build/
+
+# 忽略 npm 调试日志
+npm-debug.log*
+
+# 忽略 yarn 缓存和日志
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# 忽略本地开发环境文件
+.env.local
+.env.development
+.env.test
+.env.production
+
+# 忽略临时文件
+*.tmp
+*.temp
