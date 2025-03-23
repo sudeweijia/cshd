@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Protected Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="password-screen">
+        <h1>Enter Password</h1>
+        <input type="password" id="password-input" placeholder="Password">
+        <button id="submit-password">Submit</button>
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <div id="main-screen" style="display: none;">
+        <h1>Welcome to the Main Page</h1>
+        <form id="message-form">
+            <textarea id="message-input" placeholder="Leave a message"></textarea>
+            <button type="submit">Submit Message</button>
+        </form>
+        <div id="messages"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
