@@ -5,61 +5,59 @@ document.getElementById('submit-password').addEventListener('click', function() 
         // 密码正确，显示主界面
         document.getElementById('password-screen').style.display = 'none';
         document.getElementById('main-screen').style.display = 'block';
-        loadMessages(); // 加载留言
+        loadMessages();
     } else {
-        // 密码错误，显示错误信息
         document.getElementById('error-message').textContent = 'Incorrect password!';
     }
 });
 
 // 监听留言提交表单
-document.getElementById('message-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // 阻止表单默认提交行为
+document.getElementById('message-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
     const message = document.getElementById('message-input').value;
 
-    // 发送 POST 请求到后端 API
-    fetch('/api/messages', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }), // 将留言内容转换为 JSON 格式
-    })
-    .then(response => {
+    try {
+        // 发送 POST 请求到后端 API
+        const response = await fetch('/api/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message }),
+        });
+
+        // 检查响应状态码
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            const errorData = await response.text(); // 尝试读取响应内容
+            throw new Error(`HTTP error! Status: ${response.status}, Response: ${errorData}`);
         }
-        return response.json(); // 解析响应为 JSON
-    })
-    .then(data => {
-        // 清空输入框并重新加载留言
+
+        const data = await response.json(); // 解析 JSON 数据
         document.getElementById('message-input').value = '';
         loadMessages();
-    })
-    .catch(error => {
-        console.error('Error:', error); // 打印错误信息
-    });
+    } catch (error) {
+        console.error('提交留言失败:', error);
+        alert('提交留言失败，请检查控制台日志！');
+    }
 });
 
 // 加载留言
-function loadMessages() {
-    fetch('/api/messages')
-    .then(response => {
+async function loadMessages() {
+    try {
+        const response = await fetch('/api/messages');
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json(); // 解析响应为 JSON
-    })
-    .then(messages => {
+        const messages = await response.json();
         const messagesContainer = document.getElementById('messages');
-        messagesContainer.innerHTML = ''; // 清空留言容器
+        messagesContainer.innerHTML = '';
         messages.forEach(message => {
             const messageElement = document.createElement('div');
-            messageElement.textContent = message.message; // 显示留言内容
+            messageElement.textContent = message.message;
             messagesContainer.appendChild(messageElement);
         });
-    })
-    .catch(error => {
-        console.error('Error:', error); // 打印错误信息
-    });
+    } catch (error) {
+        console.error('加载留言失败:', error);
+        alert('加载留言失败，请检查控制台日志！');
+    }
 }
